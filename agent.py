@@ -2,17 +2,26 @@ from google.adk.agents import Agent
 from google.adk.sessions import InMemorySessionService
 from google.adk.runners import Runner
 from google.adk.tools import google_search
+from google.adk.tools import agent_tool
 
 APP_NAME="google_search_agent"
 USER_ID="user1234"
 SESSION_ID="1234"
 
+search_agent = Agent(
+    model='gemini-2.0-flash',
+    name='SearchAgent',
+    instruction="""
+    Takes a persons name, company and other details as input. Does online research. Prepares a report summarizing: Business interests, Online presence (LinkedIn, company website, media mentions, etc. and give his/her contact details if available).
+    """,
+    tools=[google_search],
+)
+
 root_agent = Agent(
-    model='gemini-2.0-flash-001',
-    name='sales_researcher',
-    description='Sales research agent',
-    instruction='Takes a persons name, company and other details as input. Does online research. Prepares a report summarizing: Business interests, Online presence (LinkedIn, company website, media mentions, etc.)',
-    tools=[google_search]
+    name="RootAgent",
+    model="gemini-2.0-flash",
+    description="Root Agent",
+    tools=[agent_tool.AgentTool(agent=search_agent)],
 )
 
 session_service = InMemorySessionService()
