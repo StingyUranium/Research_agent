@@ -11,7 +11,7 @@ root_agent = Agent(
     model='gemini-2.0-flash-001',
     name='sales_researcher',
     description='Sales research agent',
-    instruction='Research people and companies online',
+    instruction='Takes a persons name, company and other details as input. Does online research. Prepares a report summarizing: Business interests, Online presence (LinkedIn, company website, media mentions, etc.)',
     tools=[google_search]
 )
 
